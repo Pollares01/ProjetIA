@@ -42,7 +42,6 @@ public class Case {
     /**
      * Met l'attribut remplie à true
      * @return boolean
-     * @param joueurCourant
      */
     public boolean remplir(int joueurCourant){
         if(this.remplie){
@@ -59,6 +58,7 @@ public class Case {
 
     @Override
     public String toString() {
+//        return "| " + this.isRemplie() + " |";
         return "| " + this.formatIsRemplie() + " |";
     }
 }

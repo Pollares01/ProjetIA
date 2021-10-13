@@ -102,8 +102,41 @@ public class Jeu {
         if (!colonne.get(numColonne-1).remplir(this.getJoueurCourant())){
             mettreJeton(numColonne, numLigne+1);
         } else {
-            this.changerJoueurCourant();
+            if(this.checkEnd(numColonne-1, numLigne)) {
+                System.out.println("================== PARTIE FINIE ! BRAVO A " +this.getNomJoueur()+ "! ==================");
+                System.exit(0);
+            } else {
+                this.changerJoueurCourant();
+            }
         }
+    }
+
+    private boolean checkEnd(int numColonne, int numLigne) {
+        try {
+            // Vérif horizontale
+            ArrayList<Case> colonne = this.plateau.get(this.plateau.size() - numLigne);
+            // x _ _ _
+            if(colonne.get(numColonne).isRemplie() && colonne.get(numColonne+1).isRemplie() && colonne.get(numColonne+2).isRemplie() && colonne.get(numColonne+3).isRemplie()){
+                return true;
+            }
+            // _ x _ _
+            if(colonne.get(numColonne-1).isRemplie() && colonne.get(numColonne).isRemplie() && colonne.get(numColonne+1).isRemplie() && colonne.get(numColonne+2).isRemplie()){
+                return true;
+            }
+            // _ _ x _
+            if(colonne.get(numColonne-2).isRemplie() && colonne.get(numColonne-1).isRemplie() && colonne.get(numColonne).isRemplie() && colonne.get(numColonne+1).isRemplie()){
+                return true;
+            }
+            // _ _ _ x
+            if(colonne.get(numColonne-3).isRemplie() && colonne.get(numColonne-2).isRemplie() && colonne.get(numColonne-1).isRemplie() && colonne.get(numColonne).isRemplie()){
+                return true;
+            }
+
+
+        } catch (IndexOutOfBoundsException indexOutOfBoundsException){
+            return false;
+        }
+        return false;
     }
 
     public void debut() {
