@@ -13,9 +13,7 @@ public class Partie {
         j = new Jeu();
     }
 
-
-
-    public void lancerPartie(){
+        public void lancerPartie(){
         System.out.println(
                         "\t[1] Changer qui commence à jouer (actuellement " + j.getNomJoueur() + ")\n" +
                         "\t[2] Changer la profondeur (actuellement " + j.getProfondeur() + ")\n" +
@@ -34,9 +32,7 @@ public class Partie {
                     j.changerProfondeur();
                     this.lancerPartie();
                 }
-                case 3 -> {
-                    j.debut();
-                }
+                case 3 -> j.debut();
                 default -> {
                     System.out.println("Veuillez rentrer un choix valide !");
                     this.lancerPartie();

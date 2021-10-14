@@ -60,14 +60,7 @@ public class Jeu {
     public void afficherPlateau() {
         System.out.println("\n");
         this.ecrireChiffres();
-        this.tracerHorizontaleHaut();
-        for (int i = 0; i < LIGNES_PLATEAU; i++) {
-            for (int j = 0; j < COLONNES_PLATEAU; j++) {
-                System.out.print(this.getPlateau().get(i).get(j));
-            }
-            System.out.println();
-            this.tracerHorizontale();
-        }
+        affPlateauOnly();
         System.out.println("\n");
         this.jouer();
     }
@@ -103,11 +96,23 @@ public class Jeu {
             mettreJeton(numColonne, numLigne+1);
         } else {
             if(this.checkEnd(numColonne-1, numLigne)) {
+                affPlateauOnly();
                 System.out.println("================== PARTIE FINIE ! BRAVO A " +this.getNomJoueur()+ "! ==================");
                 System.exit(0);
             } else {
                 this.changerJoueurCourant();
             }
+        }
+    }
+
+    private void affPlateauOnly() {
+        this.tracerHorizontaleHaut();
+        for (int i = 0; i < LIGNES_PLATEAU; i++) {
+            for (int j = 0; j < COLONNES_PLATEAU; j++) {
+                System.out.print(this.getPlateau().get(i).get(j));
+            }
+            System.out.println();
+            this.tracerHorizontale();
         }
     }
 
@@ -131,6 +136,25 @@ public class Jeu {
             if(colonne.get(numColonne-3).isRemplie() && colonne.get(numColonne-2).isRemplie() && colonne.get(numColonne-1).isRemplie() && colonne.get(numColonne).isRemplie()){
                 return true;
             }
+
+//            // Vérif verticale
+//            ArrayList<Case> colonne = this.plateau.get(this.plateau.size() - numLigne);
+//            // x _ _ _
+//            if(colonne.get(numColonne).isRemplie() && colonne.get(numColonne+1).isRemplie() && colonne.get(numColonne+2).isRemplie() && colonne.get(numColonne+3).isRemplie()){
+//                return true;
+//            }
+//            // _ x _ _
+//            if(colonne.get(numColonne-1).isRemplie() && colonne.get(numColonne).isRemplie() && colonne.get(numColonne+1).isRemplie() && colonne.get(numColonne+2).isRemplie()){
+//                return true;
+//            }
+//            // _ _ x _
+//            if(colonne.get(numColonne-2).isRemplie() && colonne.get(numColonne-1).isRemplie() && colonne.get(numColonne).isRemplie() && colonne.get(numColonne+1).isRemplie()){
+//                return true;
+//            }
+//            // _ _ _ x
+//            if(colonne.get(numColonne-3).isRemplie() && colonne.get(numColonne-2).isRemplie() && colonne.get(numColonne-1).isRemplie() && colonne.get(numColonne).isRemplie()){
+//                return true;
+//            }
 
 
         } catch (IndexOutOfBoundsException indexOutOfBoundsException){
