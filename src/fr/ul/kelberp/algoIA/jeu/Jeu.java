@@ -2,6 +2,7 @@ package fr.ul.kelberp.algoIA.jeu;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Jeu {
@@ -40,7 +41,7 @@ public class Jeu {
     /**
      * @return String : nom du joueurCourant
      */
-    public String getNomJoueur(){
+    public String getNomJoueur() {
         return switch (joueurCourant) {
             case 0 -> NOM_JOUEUR;
             case 1 -> NOM_ALGO;
@@ -72,9 +73,9 @@ public class Jeu {
         try {
             int colonne = sc.nextInt();
             if (colonne == 1 || colonne == 2 || colonne == 3 || colonne == 4 || colonne == 5 || colonne == 6 || colonne == 7) {
-                try{
+                try {
                     this.mettreJeton(colonne, 1);
-                } catch (IndexOutOfBoundsException indexOutOfBoundsException){
+                } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
                     System.out.println("Cette colonne est déjà pleine !");
                     this.jouer();
                 }
@@ -92,12 +93,12 @@ public class Jeu {
 
     private void mettreJeton(int numColonne, int numLigne) throws IndexOutOfBoundsException {
         ArrayList<Case> colonne = this.plateau.get(this.plateau.size() - numLigne);
-        if (!colonne.get(numColonne-1).remplir(this.getJoueurCourant())){
-            mettreJeton(numColonne, numLigne+1);
+        if (!colonne.get(numColonne - 1).remplir(this.getJoueurCourant())) {
+            mettreJeton(numColonne, numLigne + 1);
         } else {
-            if(this.checkEnd(numColonne-1, numLigne)) {
+            if (this.checkEnd(numColonne - 1, numLigne)) {
                 affPlateauOnly();
-                System.out.println("================== PARTIE FINIE ! BRAVO A " +this.getNomJoueur()+ "! ==================");
+                System.out.println("================== PARTIE FINIE ! BRAVO A " + this.getNomJoueur() + "! ==================");
                 System.exit(0);
             } else {
                 this.changerJoueurCourant();
@@ -117,23 +118,45 @@ public class Jeu {
     }
 
     private boolean checkEnd(int numColonne, int numLigne) {
+        String jetonJoueur ="";
+        if (this.joueurCourant==0){
+            jetonJoueur = "x";
+        } else {
+            jetonJoueur = "o";
+        }
         try {
             // Vérif horizontale
             ArrayList<Case> colonne = this.plateau.get(this.plateau.size() - numLigne);
             // x _ _ _
-            if(colonne.get(numColonne).isRemplie() && colonne.get(numColonne+1).isRemplie() && colonne.get(numColonne+2).isRemplie() && colonne.get(numColonne+3).isRemplie()){
+            if (colonne.get(numColonne).isRemplie() && Objects.equals(colonne.get(numColonne).getJeton(), jetonJoueur)
+                && colonne.get(numColonne + 1).isRemplie() && Objects.equals(colonne.get(numColonne + 1).getJeton(), jetonJoueur)
+                && colonne.get(numColonne + 2).isRemplie() && Objects.equals(colonne.get(numColonne + 2).getJeton(), jetonJoueur)
+                && colonne.get(numColonne + 3).isRemplie() && Objects.equals(colonne.get(numColonne + 3).getJeton(), jetonJoueur)
+            ) {
                 return true;
             }
             // _ x _ _
-            if(colonne.get(numColonne-1).isRemplie() && colonne.get(numColonne).isRemplie() && colonne.get(numColonne+1).isRemplie() && colonne.get(numColonne+2).isRemplie()){
+            if (colonne.get(numColonne - 1).isRemplie() && Objects.equals(colonne.get(numColonne - 1).getJeton(), jetonJoueur)
+                    && colonne.get(numColonne).isRemplie() && Objects.equals(colonne.get(numColonne).getJeton(), jetonJoueur)
+                    && colonne.get(numColonne + 1).isRemplie() && Objects.equals(colonne.get(numColonne + 1).getJeton(), jetonJoueur)
+                    && colonne.get(numColonne + 2).isRemplie() && Objects.equals(colonne.get(numColonne + 2).getJeton(), jetonJoueur)
+            ) {
                 return true;
             }
             // _ _ x _
-            if(colonne.get(numColonne-2).isRemplie() && colonne.get(numColonne-1).isRemplie() && colonne.get(numColonne).isRemplie() && colonne.get(numColonne+1).isRemplie()){
+            if (colonne.get(numColonne - 2).isRemplie() && Objects.equals(colonne.get(numColonne - 2).getJeton(), jetonJoueur)
+                    && colonne.get(numColonne - 1).isRemplie() && Objects.equals(colonne.get(numColonne - 1).getJeton(), jetonJoueur)
+                    && colonne.get(numColonne).isRemplie() && Objects.equals(colonne.get(numColonne).getJeton(), jetonJoueur)
+                    && colonne.get(numColonne + 1).isRemplie() && Objects.equals(colonne.get(numColonne + 1).getJeton(), jetonJoueur)
+            ) {
                 return true;
             }
             // _ _ _ x
-            if(colonne.get(numColonne-3).isRemplie() && colonne.get(numColonne-2).isRemplie() && colonne.get(numColonne-1).isRemplie() && colonne.get(numColonne).isRemplie()){
+            if (colonne.get(numColonne - 3).isRemplie() && Objects.equals(colonne.get(numColonne - 3).getJeton(), jetonJoueur)
+                    && colonne.get(numColonne - 2).isRemplie() && Objects.equals(colonne.get(numColonne - 2).getJeton(), jetonJoueur)
+                    && colonne.get(numColonne - 1).isRemplie() && Objects.equals(colonne.get(numColonne - 1).getJeton(), jetonJoueur)
+                    && colonne.get(numColonne).isRemplie() && Objects.equals(colonne.get(numColonne).getJeton(), jetonJoueur)
+            ) {
                 return true;
             }
 
@@ -148,7 +171,7 @@ public class Jeu {
 //                return true;
 //            }
 //            // _ _ x _
-//            if(colonne.get(numColonne-2).isRemplie() && colonne.get(numColonne-1).isRemplie() && colonne.get(numColonne).isRemplie() && colonne.get(numColonne+1).isRemplie()){
+//            if(colonne.get(numColonne-2).isRemplie() && colonne.get(numColonne- 1).isRemplie() && colonne.get(numColonne).isRemplie() && colonne.get(numColonne+1).isRemplie()){
 //                return true;
 //            }
 //            // _ _ _ x
@@ -157,7 +180,7 @@ public class Jeu {
 //            }
 
 
-        } catch (IndexOutOfBoundsException indexOutOfBoundsException){
+        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
             return false;
         }
         return false;
@@ -191,22 +214,22 @@ public class Jeu {
     public void changerProfondeur() {
         Scanner scProf = new Scanner(System.in);
         System.out.print("Veuillez entrer la nouvelle profondeur d'exploration (>0): ");
-        try{
+        try {
             int prof = scProf.nextInt();
-            if (prof <= 0){
+            if (prof <= 0) {
                 throw new InputMismatchException();
             } else {
                 this.profondeur = prof;
                 System.out.println("Pouf ! Profondeur changée !\n");
             }
-        } catch (InputMismatchException inputMismatchException){
+        } catch (InputMismatchException inputMismatchException) {
             System.out.println("Veuillez rentrer une valeur valide !");
             this.changerProfondeur();
         }
     }
 
     public void changerJoueurCourant() {
-        this.joueurCourant = Math.abs(this.joueurCourant-1);
+        this.joueurCourant = Math.abs(this.joueurCourant - 1);
         System.out.println("Pouf ! Joueur changé !\n");
     }
 
