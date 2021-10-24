@@ -102,7 +102,10 @@ public class Jeu {
             } else {
                 jetonJoueur = "o";
             }
-            if (this.verfiHorizontale(numColonne - 1, numLigne, jetonJoueur) || this.verifVerticale(numColonne - 1, numLigne, jetonJoueur)) {
+            if (this.verfiHorizontale(numColonne - 1, numLigne, jetonJoueur)
+                    || this.verifVerticale(numColonne - 1, numLigne, jetonJoueur)
+                    || this.verifDiagBasVersHaut(numColonne - 1, numLigne, jetonJoueur)
+                    || this.verifDiagHautVersBas(numColonne - 1, numLigne, jetonJoueur)) {
                 affPlateauOnly();
                 System.out.println("================== PARTIE FINIE ! BRAVO A " + this.getNomJoueur() + "! ==================");
                 System.exit(0);
@@ -124,9 +127,9 @@ public class Jeu {
     }
 
     private boolean verfiHorizontale(int numColonne, int numLigne, String jetonJoueur) {
+        ArrayList<Case> ligne = this.plateau.get(this.plateau.size() - numLigne);
+        // x _ _ _
         try {
-            ArrayList<Case> ligne = this.plateau.get(this.plateau.size() - numLigne);
-            // x _ _ _
             if (ligne.get(numColonne).isRemplie() && Objects.equals(ligne.get(numColonne).getJeton(), jetonJoueur)
                     && ligne.get(numColonne + 1).isRemplie() && Objects.equals(ligne.get(numColonne + 1).getJeton(), jetonJoueur)
                     && ligne.get(numColonne + 2).isRemplie() && Objects.equals(ligne.get(numColonne + 2).getJeton(), jetonJoueur)
@@ -134,7 +137,11 @@ public class Jeu {
             ) {
                 return true;
             }
-            // _ x _ _
+        } catch (IndexOutOfBoundsException ignored) {
+
+        }
+        // _ x _ _
+        try {
             if (ligne.get(numColonne - 1).isRemplie() && Objects.equals(ligne.get(numColonne - 1).getJeton(), jetonJoueur)
                     && ligne.get(numColonne).isRemplie() && Objects.equals(ligne.get(numColonne).getJeton(), jetonJoueur)
                     && ligne.get(numColonne + 1).isRemplie() && Objects.equals(ligne.get(numColonne + 1).getJeton(), jetonJoueur)
@@ -142,7 +149,11 @@ public class Jeu {
             ) {
                 return true;
             }
-            // _ _ x _
+        } catch (IndexOutOfBoundsException ignored) {
+
+        }
+        // _ _ x _
+        try {
             if (ligne.get(numColonne - 2).isRemplie() && Objects.equals(ligne.get(numColonne - 2).getJeton(), jetonJoueur)
                     && ligne.get(numColonne - 1).isRemplie() && Objects.equals(ligne.get(numColonne - 1).getJeton(), jetonJoueur)
                     && ligne.get(numColonne).isRemplie() && Objects.equals(ligne.get(numColonne).getJeton(), jetonJoueur)
@@ -150,7 +161,12 @@ public class Jeu {
             ) {
                 return true;
             }
-            // _ _ _ x
+
+        } catch (IndexOutOfBoundsException ignored) {
+
+        }
+        // _ _ _ x
+        try {
             if (ligne.get(numColonne - 3).isRemplie() && Objects.equals(ligne.get(numColonne - 3).getJeton(), jetonJoueur)
                     && ligne.get(numColonne - 2).isRemplie() && Objects.equals(ligne.get(numColonne - 2).getJeton(), jetonJoueur)
                     && ligne.get(numColonne - 1).isRemplie() && Objects.equals(ligne.get(numColonne - 1).getJeton(), jetonJoueur)
@@ -158,23 +174,22 @@ public class Jeu {
             ) {
                 return true;
             }
-        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
-            return false;
+        } catch (IndexOutOfBoundsException ignored) {
+
         }
         return false;
     }
 
-
     private boolean verifVerticale(int numColonne, int numLigne, String jetonJoueur) {
         try {
             if (this.plateau.get(this.plateau.size() - numLigne).get(numColonne).isRemplie()
-                        && Objects.equals(this.plateau.get(this.plateau.size() - numLigne).get(numColonne).getJeton(), jetonJoueur)
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne).get(numColonne).getJeton(), jetonJoueur)
                     && this.plateau.get(this.plateau.size() - numLigne + 1).get(numColonne).isRemplie()
-                        && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 1).get(numColonne).getJeton(), jetonJoueur)
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 1).get(numColonne).getJeton(), jetonJoueur)
                     && this.plateau.get(this.plateau.size() - numLigne + 2).get(numColonne).isRemplie()
-                        && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 2).get(numColonne).getJeton(), jetonJoueur)
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 2).get(numColonne).getJeton(), jetonJoueur)
                     && this.plateau.get(this.plateau.size() - numLigne + 3).get(numColonne).isRemplie()
-                        && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 3).get(numColonne).getJeton(), jetonJoueur)
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 3).get(numColonne).getJeton(), jetonJoueur)
             ) {
                 return true;
             }
@@ -184,6 +199,141 @@ public class Jeu {
         return false;
     }
 
+    private boolean verifDiagBasVersHaut(int numColonne, int numLigne, String jetonJoueur) {
+        // x _ _ _
+        try {
+            if (this.plateau.get(this.plateau.size() - numLigne).get(numColonne).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne).get(numColonne).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne - 1).get(numColonne + 1).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne - 1).get(numColonne + 1).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne - 2).get(numColonne + 2).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne - 2).get(numColonne + 2).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne - 3).get(numColonne + 3).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne - 3).get(numColonne + 3).getJeton(), jetonJoueur)
+            ) {
+                return true;
+            }
+        } catch (IndexOutOfBoundsException ignored) {
+
+        }
+        // _ x _ _
+        try {
+            if (this.plateau.get(this.plateau.size() - numLigne).get(numColonne).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne).get(numColonne).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne + 1).get(numColonne - 1).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 1).get(numColonne - 1).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne - 1).get(numColonne + 1).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne - 1).get(numColonne + 1).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne - 2).get(numColonne + 2).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne - 2).get(numColonne + 2).getJeton(), jetonJoueur)
+            ) {
+                return true;
+            }
+        } catch (IndexOutOfBoundsException ignored) {
+
+        }
+        // _ _ x _
+        try {
+            if (this.plateau.get(this.plateau.size() - numLigne).get(numColonne).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne).get(numColonne).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne + 1).get(numColonne - 1).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 1).get(numColonne - 1).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne + 2).get(numColonne - 2).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 2).get(numColonne - 2).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne - 1).get(numColonne + 1).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne - 1).get(numColonne + 1).getJeton(), jetonJoueur)
+            ) {
+                return true;
+            }
+        } catch (IndexOutOfBoundsException ignored) {
+
+        }
+        // _ _ _ x
+        try {
+            if (this.plateau.get(this.plateau.size() - numLigne).get(numColonne).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne).get(numColonne).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne + 1).get(numColonne - 1).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 1).get(numColonne - 1).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne + 2).get(numColonne - 2).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 2).get(numColonne - 2).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne + 3).get(numColonne - 3).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 3).get(numColonne - 3).getJeton(), jetonJoueur)
+            ) {
+                return true;
+            }
+        } catch (IndexOutOfBoundsException ignored) {
+
+        }
+        return false;
+    }
+
+    private boolean verifDiagHautVersBas(int numColonne, int numLigne, String jetonJoueur) {
+        // x _ _ _
+        try {
+            if (this.plateau.get(this.plateau.size() - numLigne).get(numColonne).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne).get(numColonne).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne + 1).get(numColonne + 1).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 1).get(numColonne + 1).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne + 2).get(numColonne + 2).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 2).get(numColonne + 2).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne + 3).get(numColonne + 3).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 3).get(numColonne + 3).getJeton(), jetonJoueur)
+            ) {
+                return true;
+            }
+        } catch (IndexOutOfBoundsException ignored) {
+
+        }
+        // _ x _ _
+        try {
+            if (this.plateau.get(this.plateau.size() - numLigne).get(numColonne).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne).get(numColonne).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne - 1).get(numColonne - 1).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne - 1).get(numColonne - 1).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne + 1).get(numColonne + 1).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 1).get(numColonne + 1).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne + 2).get(numColonne + 2).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 2).get(numColonne + 2).getJeton(), jetonJoueur)
+            ) {
+                return true;
+            }
+        } catch (IndexOutOfBoundsException ignored) {
+
+        }
+        // _ _ x _
+        try {
+            if (this.plateau.get(this.plateau.size() - numLigne).get(numColonne).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne).get(numColonne).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne - 1).get(numColonne - 1).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne - 1).get(numColonne - 1).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne - 2).get(numColonne - 2).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne - 2).get(numColonne - 2).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne + 1).get(numColonne + 1).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 1).get(numColonne + 1).getJeton(), jetonJoueur)
+            ) {
+                return true;
+            }
+        } catch (IndexOutOfBoundsException ignored) {
+
+        }
+        // _ _ _ x
+        try {
+            if (this.plateau.get(this.plateau.size() - numLigne).get(numColonne).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne).get(numColonne).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne - 1).get(numColonne - 1).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne - 1).get(numColonne - 1).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne - 2).get(numColonne - 2).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne - 2).get(numColonne - 2).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne - 3).get(numColonne - 3).isRemplie()
+                    && Objects.equals(this.plateau.get(this.plateau.size() - numLigne - 3).get(numColonne - 3).getJeton(), jetonJoueur)
+            ) {
+                return true;
+            }
+        } catch (IndexOutOfBoundsException ignored) {
+
+        }
+        return false;
+    }
 
     public void debut() {
         this.afficherPlateau();
