@@ -96,7 +96,13 @@ public class Jeu {
         if (!colonne.get(numColonne - 1).remplir(this.getJoueurCourant())) {
             mettreJeton(numColonne, numLigne + 1);
         } else {
-            if (this.checkEnd(numColonne - 1, numLigne)) {
+            String jetonJoueur = "";
+            if (this.joueurCourant == 0) {
+                jetonJoueur = "x";
+            } else {
+                jetonJoueur = "o";
+            }
+            if (this.verfiHorizontale(numColonne - 1, numLigne, jetonJoueur) || this.verifVerticale(numColonne - 1, numLigne, jetonJoueur)) {
                 affPlateauOnly();
                 System.out.println("================== PARTIE FINIE ! BRAVO A " + this.getNomJoueur() + "! ==================");
                 System.exit(0);
@@ -117,74 +123,67 @@ public class Jeu {
         }
     }
 
-    private boolean checkEnd(int numColonne, int numLigne) {
-        String jetonJoueur ="";
-        if (this.joueurCourant==0){
-            jetonJoueur = "x";
-        } else {
-            jetonJoueur = "o";
-        }
+    private boolean verfiHorizontale(int numColonne, int numLigne, String jetonJoueur) {
         try {
-            // Vérif horizontale
-            ArrayList<Case> colonne = this.plateau.get(this.plateau.size() - numLigne);
+            ArrayList<Case> ligne = this.plateau.get(this.plateau.size() - numLigne);
             // x _ _ _
-            if (colonne.get(numColonne).isRemplie() && Objects.equals(colonne.get(numColonne).getJeton(), jetonJoueur)
-                && colonne.get(numColonne + 1).isRemplie() && Objects.equals(colonne.get(numColonne + 1).getJeton(), jetonJoueur)
-                && colonne.get(numColonne + 2).isRemplie() && Objects.equals(colonne.get(numColonne + 2).getJeton(), jetonJoueur)
-                && colonne.get(numColonne + 3).isRemplie() && Objects.equals(colonne.get(numColonne + 3).getJeton(), jetonJoueur)
+            if (ligne.get(numColonne).isRemplie() && Objects.equals(ligne.get(numColonne).getJeton(), jetonJoueur)
+                    && ligne.get(numColonne + 1).isRemplie() && Objects.equals(ligne.get(numColonne + 1).getJeton(), jetonJoueur)
+                    && ligne.get(numColonne + 2).isRemplie() && Objects.equals(ligne.get(numColonne + 2).getJeton(), jetonJoueur)
+                    && ligne.get(numColonne + 3).isRemplie() && Objects.equals(ligne.get(numColonne + 3).getJeton(), jetonJoueur)
             ) {
                 return true;
             }
             // _ x _ _
-            if (colonne.get(numColonne - 1).isRemplie() && Objects.equals(colonne.get(numColonne - 1).getJeton(), jetonJoueur)
-                    && colonne.get(numColonne).isRemplie() && Objects.equals(colonne.get(numColonne).getJeton(), jetonJoueur)
-                    && colonne.get(numColonne + 1).isRemplie() && Objects.equals(colonne.get(numColonne + 1).getJeton(), jetonJoueur)
-                    && colonne.get(numColonne + 2).isRemplie() && Objects.equals(colonne.get(numColonne + 2).getJeton(), jetonJoueur)
+            if (ligne.get(numColonne - 1).isRemplie() && Objects.equals(ligne.get(numColonne - 1).getJeton(), jetonJoueur)
+                    && ligne.get(numColonne).isRemplie() && Objects.equals(ligne.get(numColonne).getJeton(), jetonJoueur)
+                    && ligne.get(numColonne + 1).isRemplie() && Objects.equals(ligne.get(numColonne + 1).getJeton(), jetonJoueur)
+                    && ligne.get(numColonne + 2).isRemplie() && Objects.equals(ligne.get(numColonne + 2).getJeton(), jetonJoueur)
             ) {
                 return true;
             }
             // _ _ x _
-            if (colonne.get(numColonne - 2).isRemplie() && Objects.equals(colonne.get(numColonne - 2).getJeton(), jetonJoueur)
-                    && colonne.get(numColonne - 1).isRemplie() && Objects.equals(colonne.get(numColonne - 1).getJeton(), jetonJoueur)
-                    && colonne.get(numColonne).isRemplie() && Objects.equals(colonne.get(numColonne).getJeton(), jetonJoueur)
-                    && colonne.get(numColonne + 1).isRemplie() && Objects.equals(colonne.get(numColonne + 1).getJeton(), jetonJoueur)
+            if (ligne.get(numColonne - 2).isRemplie() && Objects.equals(ligne.get(numColonne - 2).getJeton(), jetonJoueur)
+                    && ligne.get(numColonne - 1).isRemplie() && Objects.equals(ligne.get(numColonne - 1).getJeton(), jetonJoueur)
+                    && ligne.get(numColonne).isRemplie() && Objects.equals(ligne.get(numColonne).getJeton(), jetonJoueur)
+                    && ligne.get(numColonne + 1).isRemplie() && Objects.equals(ligne.get(numColonne + 1).getJeton(), jetonJoueur)
             ) {
                 return true;
             }
             // _ _ _ x
-            if (colonne.get(numColonne - 3).isRemplie() && Objects.equals(colonne.get(numColonne - 3).getJeton(), jetonJoueur)
-                    && colonne.get(numColonne - 2).isRemplie() && Objects.equals(colonne.get(numColonne - 2).getJeton(), jetonJoueur)
-                    && colonne.get(numColonne - 1).isRemplie() && Objects.equals(colonne.get(numColonne - 1).getJeton(), jetonJoueur)
-                    && colonne.get(numColonne).isRemplie() && Objects.equals(colonne.get(numColonne).getJeton(), jetonJoueur)
+            if (ligne.get(numColonne - 3).isRemplie() && Objects.equals(ligne.get(numColonne - 3).getJeton(), jetonJoueur)
+                    && ligne.get(numColonne - 2).isRemplie() && Objects.equals(ligne.get(numColonne - 2).getJeton(), jetonJoueur)
+                    && ligne.get(numColonne - 1).isRemplie() && Objects.equals(ligne.get(numColonne - 1).getJeton(), jetonJoueur)
+                    && ligne.get(numColonne).isRemplie() && Objects.equals(ligne.get(numColonne).getJeton(), jetonJoueur)
             ) {
                 return true;
             }
-
-//            // Vérif verticale
-//            ArrayList<Case> colonne = this.plateau.get(this.plateau.size() - numLigne);
-//            // x _ _ _
-//            if(colonne.get(numColonne).isRemplie() && colonne.get(numColonne+1).isRemplie() && colonne.get(numColonne+2).isRemplie() && colonne.get(numColonne+3).isRemplie()){
-//                return true;
-//            }
-//            // _ x _ _
-//            if(colonne.get(numColonne-1).isRemplie() && colonne.get(numColonne).isRemplie() && colonne.get(numColonne+1).isRemplie() && colonne.get(numColonne+2).isRemplie()){
-//                return true;
-//            }
-//            // _ _ x _
-//            if(colonne.get(numColonne-2).isRemplie() && colonne.get(numColonne- 1).isRemplie() && colonne.get(numColonne).isRemplie() && colonne.get(numColonne+1).isRemplie()){
-//                return true;
-//            }
-//            // _ _ _ x
-//            if(colonne.get(numColonne-3).isRemplie() && colonne.get(numColonne-2).isRemplie() && colonne.get(numColonne-1).isRemplie() && colonne.get(numColonne).isRemplie()){
-//                return true;
-//            }
-
-
         } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
             return false;
         }
         return false;
     }
+
+
+    private boolean verifVerticale(int numColonne, int numLigne, String jetonJoueur) {
+        try {
+            if (this.plateau.get(this.plateau.size() - numLigne).get(numColonne).isRemplie()
+                        && Objects.equals(this.plateau.get(this.plateau.size() - numLigne).get(numColonne).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne + 1).get(numColonne).isRemplie()
+                        && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 1).get(numColonne).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne + 2).get(numColonne).isRemplie()
+                        && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 2).get(numColonne).getJeton(), jetonJoueur)
+                    && this.plateau.get(this.plateau.size() - numLigne + 3).get(numColonne).isRemplie()
+                        && Objects.equals(this.plateau.get(this.plateau.size() - numLigne + 3).get(numColonne).getJeton(), jetonJoueur)
+            ) {
+                return true;
+            }
+        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+            return false;
+        }
+        return false;
+    }
+
 
     public void debut() {
         this.afficherPlateau();
