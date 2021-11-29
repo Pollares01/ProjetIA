@@ -90,8 +90,14 @@ public class Jeu {
             this.jouer();
         }
     }
-
-    private void mettreJeton(int numColonne, int numLigne) throws IndexOutOfBoundsException {
+    /**
+     * Ajout d'un jeton dans la grille de jeu
+     * @param numColonne
+     * @param numLigne
+     * @param constructionArbre	permet de ne pas afficher les messages de victoire dans le cas de la construction de l'arbre
+     * @throws IndexOutOfBoundsException
+     */
+    public void mettreJeton(int numColonne, int numLigne) throws IndexOutOfBoundsException {
         ArrayList<Case> colonne = this.plateau.get(this.plateau.size() - numLigne);
         if (!colonne.get(numColonne - 1).remplir(this.getJoueurCourant())) {
             mettreJeton(numColonne, numLigne + 1);
@@ -107,10 +113,10 @@ public class Jeu {
                     || this.verifDiagBasVersHaut(numColonne - 1, numLigne, jetonJoueur)
                     || this.verifDiagHautVersBas(numColonne - 1, numLigne, jetonJoueur)) {
                 affPlateauOnly();
-                System.out.println("================== PARTIE FINIE ! BRAVO A " + this.getNomJoueur() + "! ==================");
+            	System.out.println("================== PARTIE FINIE ! BRAVO A " + this.getNomJoueur() + "! ==================");
                 System.exit(0);
             } else {
-                this.changerJoueurCourant();
+                this.changerJoueurCourant();	
             }
         }
     }
